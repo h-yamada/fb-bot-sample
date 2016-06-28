@@ -1,0 +1,6 @@
+package: fb-bot-sample
+import:
+- package: github.com/gin-gonic/gin
+- package: github.com/ymd38/facebook
+  subpackages:
+  - /messenger
