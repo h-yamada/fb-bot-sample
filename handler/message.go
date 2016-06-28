@@ -25,8 +25,8 @@ func PostWebHook(c *gin.Context) {
 		{"text", "なんだと？"},
 		{"text", "...うぜえ"},
 		{"img", "http://1093.up.n.seesaa.net/1093/image/takokora.jpg"},
-		{"img", "http://ohtm.cocolog-nifty.com/.shared/image.html?/photos/uncategorized/2013/04/26/ec98ac6b.jpg"},
-		{"img", "http://ks.c.yimg.jp/res/chie-que-10136/10/136/469/560/i320"},
+		{"img", "http://s.eximg.jp/exnews/feed/Kotaku/Kotaku_201211_sce_new_cm_3.jpg"},
+		{"img", "http://stat.ameba.jp/user_images/20160514/19/hajackass/72/cf/j/o0800060013645886097.jpg"},
 	}
 
 	receiver := &ReceivedMessage{}
@@ -51,7 +51,7 @@ func PostWebHook(c *gin.Context) {
 		switch myMessages[i].kind {
 		case "text":
 			m = NewTextMessage(messaging.Sender.ID, myMessages[i].message)
-		case "image":
+		case "img":
 			m = NewImageMessage(messaging.Sender.ID, myMessages[i].message)
 		default:
 			m = NewTextMessage(messaging.Sender.ID, "orz")
