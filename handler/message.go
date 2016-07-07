@@ -4,6 +4,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"regexp"
 	"time"
 
 	"github.com/h-yamada/fb-bot-sample/config"
@@ -45,16 +46,21 @@ func PostWebHook(c *gin.Context) {
 		fb := NewFacebookMessenger(config.FbToken)
 		rand.Seed(time.Now().UnixNano())
 
-		i := rand.Intn(len(myMessages))
-
 		var m interface{}
-		switch myMessages[i].kind {
-		case "text":
-			m = NewTextMessage(messaging.Sender.ID, myMessages[i].message)
-		case "img":
-			m = NewImageMessage(messaging.Sender.ID, myMessages[i].message)
-		default:
-			m = NewTextMessage(messaging.Sender.ID, "orz")
+
+		if verse := lime(messaging.Message.Text); verse != "" {
+			m = NewTextMessage(messaging.Sender.ID, verse)
+		} else {
+			i := rand.Intn(len(myMessages))
+			switch myMessages[i].kind {
+			case "text":
+				m = NewTextMessage(messaging.Sender.ID, myMessages[i].message)
+			case "img":
+				m = NewImageMessage(messaging.Sender.ID, myMessages[i].message)
+			default:
+				m = NewTextMessage(messaging.Sender.ID, "orz")
+			}
+
 		}
 
 		if err := fb.SendMessage(m); err != nil {
@@ -63,4 +69,16 @@ func PostWebHook(c *gin.Context) {
 	}
 
 	c.String(http.StatusOK, "OK")
+}
+
+func lime(message string) string {
+	myVerse := []string{
+		"かますぜ 俺はボット　最近やたらとホット　鋭いライムでおまえの喉元カット",
+	}
+
+	switch {
+	case regexp.MustCompile(`おい`).Match([]byte(message)):
+		return myVerse[0]
+	}
+	return ""
 }
