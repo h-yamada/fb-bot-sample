@@ -74,11 +74,14 @@ func PostWebHook(c *gin.Context) {
 func lime(message string) string {
 	myVerse := []string{
 		"かますぜ 俺はボット　最近やたらとホット　鋭いライムでおまえの喉元カット",
+		"俺は検索のお色直しじゃねー F8見ただろ？可能性は半端ねー",
 	}
 
 	switch {
 	case regexp.MustCompile(`おい`).Match([]byte(message)):
 		return myVerse[0]
+	case regexp.MustCompile(`検索`).Match([]byte(message)):
+		return myVerse[1]
 	}
 	return ""
 }
