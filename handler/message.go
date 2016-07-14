@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/h-yamada/fb-bot-sample/config"
+	. "github.com/h-yamada/fb-bot-sample/model"
 
 	. "github.com/ymd38/facebook/messenger"
 
@@ -47,6 +48,11 @@ func PostWebHook(c *gin.Context) {
 		rand.Seed(time.Now().UnixNano())
 
 		var m interface{}
+
+		movikuma := new(Movikuma)
+		movikumaList, _ := movikuma.Search(messaging.Message.Text)
+
+		log.Println(movikumaList)
 
 		if verse := lime(messaging.Message.Text); verse != "" {
 			m = NewTextMessage(messaging.Sender.ID, verse)

@@ -12,6 +12,7 @@ import (
 
 func main() {
 	config.FbToken = os.Getenv("FBTOKEN")
+	config.MovikumaEsUrl = os.Getenv("ESURL")
 	if config.FbToken != "" {
 		router := gin.Default()
 
