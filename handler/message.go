@@ -54,7 +54,10 @@ func PostWebHook(c *gin.Context) {
 
 		log.Println(movikumaList)
 
-		if verse := lime(messaging.Message.Text); verse != "" {
+		if movikumaList != nil && len(movikumaList) > 0 {
+			recommendUrl := "これ　https://www-stg.movikuma.tv/m/" + movikumaList[0].Key
+			m = NewTextMessage(messaging.Sender.ID, recommendUrl)
+		} else if verse := lime(messaging.Message.Text); verse != "" {
 			m = NewTextMessage(messaging.Sender.ID, verse)
 		} else {
 			i := rand.Intn(len(myMessages))

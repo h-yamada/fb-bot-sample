@@ -40,9 +40,9 @@ func (movikuma *Movikuma) Search(keyword string) ([]Movikuma, error) {
 		log.Println(err)
 		return nil, err
 	}
-	//var movikumaType Movikuma
+	var movikumaType Movikuma
 	movList := []Movikuma{}
-	for _, result := range searchResult.Each(reflect.TypeOf(movikuma)) {
+	for _, result := range searchResult.Each(reflect.TypeOf(movikumaType)) {
 		if m, ok := result.(Movikuma); ok {
 			movList = append(movList, m)
 		}
