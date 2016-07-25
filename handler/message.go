@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"log"
 	"math/rand"
 	"net/http"
@@ -55,8 +56,20 @@ func PostWebHook(c *gin.Context) {
 		log.Println(movikumaList)
 
 		if movikumaList != nil && len(movikumaList) > 0 {
-			recommendUrl := "これ　https://www-stg.movikuma.tv/m/" + movikumaList[0].Key
-			m = NewTextMessage(messaging.Sender.ID, recommendUrl)
+			elements := []Element{}
+			for i := 0; i < len(movikumaList); i++ {
+				title := fmt.Sprintf("今、人気の「%s」動画はコチラ！", messaging.Message.Text)
+				item_url := "https://www-stg.movikuma.tv/m/" + movikumaList[i].Key
+				image_url := "https://d2gaqml1a8hogr.cloudfront.net/m/" + movikumaList[i].Key + "/thumbnail"
+				elements = append(elements, Element{Title: title, ItemUrl: item_url, ImageUrl: image_url})
+				if i >= 3 {
+					break
+				}
+			}
+
+			gt := NewGenericTemplate(messaging.Sender.ID, elements)
+			m = gt
+
 		} else if verse := lime(messaging.Message.Text); verse != "" {
 			m = NewTextMessage(messaging.Sender.ID, verse)
 		} else {
